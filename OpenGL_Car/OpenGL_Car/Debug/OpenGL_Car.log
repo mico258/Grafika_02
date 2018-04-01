@@ -1,0 +1,4 @@
+﻿  main.cpp
+c:\users\asus rog\desktop\opengl_car\opengl_car\main.cpp(63): warning C4838: conversion from 'double' to 'GLfloat' requires a narrowing conversion
+  OpenGL_Car.vcxproj -> C:\Users\ASUS ROG\Desktop\OpenGL_Car\Debug\OpenGL_Car.exe
+  OpenGL_Car.vcxproj -> C:\Users\ASUS ROG\Desktop\OpenGL_Car\Debug\OpenGL_Car.pdb (Partial PDB)
