@@ -32,8 +32,8 @@ GLfloat r = 0, g = 0, b = 1;
 GLint light = 1;
 int count = 1, flg = 1;
 int view = 0;
-int flag1 = 0, aflag = 1;            //to switch car driving mode
-int flag2 = 0, wheelflag = 0;   //to switch fog effect
+int flag1 = 1, aflag = 1;            //to switch car driving mode
+int flag2 = 0, wheelflag = 1;   //to switch fog effect
 GLUquadricObj *t;
 
 static void SpecialKeyFunc(int Key, int x, int y);
@@ -693,8 +693,7 @@ void myMenu(int id)
 {
 	if (id == 1)
 	{
-		flag1 = 0;
-		wheelflag = 0;
+		flag1 = 1;
 		glutPostRedisplay();
 
 	}
@@ -702,22 +701,16 @@ void myMenu(int id)
 	{
 		flag1 = 1;
 		flag2 = 0;
-		wheelflag = 0;
 		xangle += 5.0;
 		glutPostRedisplay();
 	}
 	if (id == 3)
 	{
 		flag2 = 1;
-		wheelflag = 0;
 		xangle += 5.0;
 		glutPostRedisplay();
 	}
-	if (id == 4)
-	{
-		wheelflag = 1;
-		glutPostRedisplay();
-	}
+	
 	if (id == 5)
 	{
 		if (day)
@@ -890,10 +883,7 @@ int main(int argc, char **argv)
 	glutAddMenuEntry("yellow", 10);
 	glutAddMenuEntry("grey", 11);
 	glutCreateMenu(myMenu);
-	glutAddMenuEntry("car model mode", 1);
-	glutAddMenuEntry("car driving mode", 2);
 	glutAddMenuEntry("fog effect", 3);
-	glutAddMenuEntry("wheel effect", 4);
 	glutAddMenuEntry("toggle light", 5);
 	glutAddSubMenu("car colors", submenu);
 	glutAddMenuEntry("daymode", 12);
