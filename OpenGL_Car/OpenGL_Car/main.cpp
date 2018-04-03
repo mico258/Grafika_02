@@ -22,6 +22,12 @@ GLfloat xs = 1.0, ys = 1.0, zs = 1.0;
 
 GLfloat xangle = 0.0, yangle = 0.0, zangle = 0.0, angle = 0.0;   /* axis angles */
 
+
+// actual vector representing the camera's direction
+float lx = 0.0f, lz = -1.0f;
+// XZ position of the camera
+float x = 0.0f, z = 5.0f;
+
 GLfloat r = 0, g = 0, b = 1;
 GLint light = 1;
 int count = 1, flg = 1;
@@ -130,7 +136,7 @@ void display1(void)
 	//display_string(10, 370, "KEYBOARD", 2);
 	//display_string(10, 340, "X-Y-Z KEYS FOR CORRESPONDING ROTATION", 3);
 	//display_string(10, 310, "A-S-Q CAR CUSTOM SIZE SELECTION", 3);
-	//display_string(10, 280, "U-F FOR CAMERA VIEW SETTINGS", 3);
+	display_string(10, 280, "U-F FOR CAMERA VIEW SETTINGS", 3);
 	//display_string(10, 250, "USE LEFT ARROW(<-) AND RIGHT ARROW(->) TO MOVE CAR", 3);
 	//display_string(10, 220, "ESCAPE TO EXIT", 3);
 
@@ -215,7 +221,9 @@ GLvoid DrawGLScene()
 		glEnd();
 		glPointSize(200.0);
 
-
+		gluLookAt(	x, 1.0f, z,
+			x+lx, 1.0f,  z+lz,
+			0.0f, 1.0f,  0.0f);
 
 		glBegin(GL_QUADS);                /* OBJECT MODULE*/
 
@@ -487,6 +495,7 @@ GLvoid DrawGLScene()
 
 		glColor3f(0.7, 0.7, 0.7);
 		glPushMatrix();
+		
 		glBegin(GL_LINE_STRIP);
 		for (theta = 0; theta<360; theta = theta + 20)
 		{
@@ -540,6 +549,25 @@ GLvoid DrawGLScene()
 }
 
 
+void myMouseFunc(int button, int state, int x, int y)
+{
+	if (button == 3) {
+		if (state == GLUT_UP) {
+			zs -= 0.2;
+			glutPostRedisplay();
+			
+		}
+	}
+
+	if (button == 4) {
+		if (state == GLUT_UP) {
+			zs += 0.2;
+			glutPostRedisplay();
+
+		}
+	}
+}
+
 /*  The function called whenever a "normal" key is pressed. */
 void NormalKey(GLubyte key, GLint x, GLint y)
 {
@@ -553,7 +581,7 @@ void NormalKey(GLubyte key, GLint x, GLint y)
 		DrawGLScene();
 		break;
 
-		/*case 'x': xangle += 5.0;
+		case 'x': xangle += 5.0;
 		glutPostRedisplay();
 		break;
 
@@ -579,29 +607,29 @@ void NormalKey(GLubyte key, GLint x, GLint y)
 		case 'Z':
 		zangle -= 5.0;
 		glutPostRedisplay();
-		break;	*/
+		break;	
 
-		//case 'u':                          /* Move up */
-		//yt += 0.2;
-		//glutPostRedisplay();
-		//break;
+		case 'u':                          /* Move up */
+		yt += 0.2;
+		glutPostRedisplay();
+		break;
 
-		//	case 'U':
-		//	yt -= 0.2;                      /* Move down */
-		//glutPostRedisplay();
-		//break;
+		case 'U':
+		yt -= 0.2;                      /* Move down */
+		glutPostRedisplay();
+		break;
 
-		//	case 'f':                          /* Move forward */
-		//	zt += 0.2;
-		//	glutPostRedisplay();
-		//	break;
+		case 'f':                          /* Move forward */
+		zt += 0.2;
+		glutPostRedisplay();
+		break;
 
-		//case 'F':
-		//	zt -= 0.2;                      /* Move away */
-		//	glutPostRedisplay();
-		//break;
+		case 'F':
+		zt -= 0.2;                      /* Move away */
+		glutPostRedisplay();
+		break;
 
-		/* case 's':zs += .2;
+		case 's':zs += .2;
 		glutPostRedisplay();
 		break;
 
@@ -623,7 +651,7 @@ void NormalKey(GLubyte key, GLint x, GLint y)
 
 		case 'Q':xs -= 0.2;
 		glutPostRedisplay();
-		break;	*/
+		break;
 
 
 	default:
@@ -634,6 +662,8 @@ void NormalKey(GLubyte key, GLint x, GLint y)
 
 static void SpecialKeyFunc(int Key, int x, int y)
 {
+	float fraction = 0.1f;
+
 	switch (Key) {
 	case GLUT_KEY_RIGHT:
 		if (!wheelflag)
@@ -850,6 +880,7 @@ int main(int argc, char **argv)
 	glutReshapeFunc(ReSizeGLScene);
 	glutKeyboardFunc(NormalKey);         /*Normal key is pressed */
 	glutSpecialFunc(SpecialKeyFunc);
+	glutMouseFunc(myMouseFunc);
 	InitGL(Xsize, Ysize);
 	int submenu = glutCreateMenu(colorMenu);
 	glutAddMenuEntry("blue", 6);
